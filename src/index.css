@@ -33,13 +33,32 @@ header p {
   color:#8E8E8E
 }
 
-.status {
+.status-won {
   text-align: center;
   background-color: #10A95B;
   border-radius:4px;
   max-width: 350px; /* Match the width of .chips-section */
   margin: 0 auto; /* Center the element */
   margin-bottom: 35px;
+}
+
+.status-lost {
+  text-align: center;
+  background-color: #BA2A2A;
+  border-radius:4px;
+  max-width: 350px; /* Match the width of .chips-section */
+  margin: 0 auto; /* Center the element */
+  margin-bottom: 35px;
+}
+
+.status-progress {
+  text-align: center;
+  background-color: #282726;
+  border-radius:4px;
+  max-width: 350px; /* Match the width of .chips-section */
+  margin: 0 auto; /* Center the element */
+  margin-bottom: 35px;
+  visibility: hidden;
 }
 
 .status h3,
@@ -66,13 +85,36 @@ header p {
 .chips-section {
   display: flex;
   flex-wrap: wrap;
-  gap: 5px; /* Ensure there's consistent spacing */
-  justify-content: center; /* Center content horizontally */
-  max-width: 350px;
-  width: 100%; /* Allow full centering within the container */
-  margin: 0 auto; /* Ensure it's centered in the parent container */
-  margin-bottom: 35px;
+  gap: 5px;
+  justify-content: center; /* Center horizontally */
+  max-width: 350px; /* Set a consistent max width */
+  width: 100%; /* Allow it to adapt within the parent container */
+  margin: 0 auto; /* Center the element within the parent container */
+  margin-bottom: 36px;
 }
+
+.chip {
+  border-radius: 3px;
+  padding: 4.5px;
+  position: relative;
+}
+
+.chip.lost::before {
+  font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", "Segoe UI Symbol", sans-serif;
+  content: "\1F480";
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  font-size: 0.85rem;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+
 
 .letterbox-section {
   display: flex;
@@ -94,6 +136,11 @@ header p {
   height: 40px;
   background-color: #323232;
   border-bottom: 1px solid #F9F4DA;
+  color: #323232;
+}
+
+.letterbox.guessed {
+  color: white;
 }
 
 .keyboard-section {
@@ -146,3 +193,4 @@ header p {
   margin-inline: auto;
   cursor: pointer;
 }
+

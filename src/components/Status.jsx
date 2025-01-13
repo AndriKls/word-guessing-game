@@ -1,8 +1,8 @@
-export default function Status() {
+export default function Status(props) {
     return (
-        <div className="status">
-            <h3>You win!</h3>
-            <p>Well done! 🎉</p>
+        <div className={props.className}>
+            <h3>{props.text1}</h3>
+            <p>{props.text2}</p>
         </div>
     )
 }

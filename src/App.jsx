@@ -6,13 +6,17 @@ import Letterbox from "./components/Letterbox"
 import {languages} from "./languages.js"
 import Key from "./components/Key.jsx"
 import clsx from "clsx";
+import { getFarewellText } from "../utils.js"
+import { getWord } from "../utils.js"
+import Confetti from "./components/Confetti.jsx"
 
 
 
 export default function Hangman() {
+    const word =  getWord().toUpperCase()
     const [guessedLetters, setGuessedLetters] = React.useState([])
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-    const [currentWord, setCurrentWord] = React.useState("REACT")
+    const [currentWord, setCurrentWord] = React.useState(word);
     const letters = currentWord.split("")
 
     const wrongGuessCount = guessedLetters.filter(letter => !letters.includes(letter)).length;
@@ -23,13 +27,25 @@ export default function Hangman() {
     
     const isGameOver = isGameLost || isGameWon
 
+    const lastGuessedLetter = guessedLetters[guessedLetters.length - 1]
+    const isLastGuessIncorrect = lastGuessedLetter && !currentWord.includes(lastGuessedLetter)
+
+    function newGame() {
+      setCurrentWord(word)
+      setGuessedLetters([])
+    }
+
     let statusBox;
 
       if (isGameWon) {
         statusBox = <Status text1="You win!" text2="Well done! 🎉" className="status-won" />;
       } else if (isGameLost) {
         statusBox = <Status text1="Game over!" text2="You lose! Better start learning Assembly 😭" className="status-lost" />;
-      } else {
+      } else if (lastGuessedLetter && isLastGuessIncorrect) {
+        statusBox = <Status text1={getFarewellText(languages[wrongGuessCount].name)} className="status-farewell" />;
+      }
+      
+      else {
         statusBox = <Status text1="Game in progresss!" text2="Keep guessing!" className="status-progress" />;
       }
 
@@ -38,8 +54,9 @@ export default function Hangman() {
 
     const letterBoxes = letters.map((letter, index) => {
       const isGuessed = letters.includes(letter) && guessedLetters.includes(letter);
+      const shouldRevealLetter = isGuessed || isGameLost
       return (
-        <Letterbox id={index} key={index} letter={letter} className={clsx(["letterbox", isGuessed && "guessed"])}/>
+        <Letterbox id={index} key={index} letter={shouldRevealLetter && letter} className={clsx(["letterbox", shouldRevealLetter && "guessed"])}/>
       );
     })
 
@@ -51,7 +68,7 @@ export default function Hangman() {
         <Key
           key={index}
           letter={letter}
-          onClick={guessLetter}
+          onClick={!isGameOver && guessLetter}
           className={clsx(["key", isGreen && "green", isRed && "red"])}
         />
       );
@@ -84,7 +101,6 @@ export default function Hangman() {
             prevLetters : 
             [...prevLetters, letter]
     )
-      console.log(guessedLetters)
     }
     return (
       <>
@@ -103,9 +119,10 @@ export default function Hangman() {
         </section>
 
        {isGameOver && (<section className="new-game-section">
-          <button className="new-game">New Game</button>
+          <button className="new-game" onClick={newGame}>New Game</button>
         </section>)
         }
+        {isGameWon && <Confetti />}
       </>
     )
 }

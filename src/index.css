@@ -61,6 +61,17 @@ header p {
   visibility: hidden;
 }
 
+.status-farewell {
+    text-align: center;
+    background-color: #7A5EA7;
+    border: 1px dashed #323232;
+    font-style: italic;
+    font-weight: 400;
+    max-width: 350px; /* Match the width of .chips-section */
+    margin: 0 auto; /* Center the element */
+    margin-bottom: 35px;
+}
+
 .status h3,
 .status p {
     font-weight: 500;
